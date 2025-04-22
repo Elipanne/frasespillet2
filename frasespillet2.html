@@ -3,7 +3,7 @@
 // Etter X spørsmål: vinn (hvis nok drivstoff) eller tap.
 
 // Lager et canvas-element (tegneflate) og legger det til på nettsiden
-dconst canvas = document.createElement('canvas');
+const canvas = document.createElement('canvas');
 canvas.width = 800;
 canvas.height = 600;
 document.body.appendChild(canvas);
@@ -43,9 +43,9 @@ function drawScreen() {
 
   // Henter gjeldende spørsmål og tegner det + svaralternativer
   let q = questions[currentQuestion];
-  ctx.fillText(q.question, 50, 100);
+  ctx.fillText(q.question, 50, 100); // Spørsmålstekst
   q.options.forEach((opt, i) => {
-    ctx.fillText(`${i + 1}: ${opt}`, 70, 150 + i * 40);
+    ctx.fillText(`${i + 1}: ${opt}`, 70, 150 + i * 40); // Tegner hvert svaralternativ
   });
 
   // Tegner drivstoffstatus oppe i høyre hjørne
@@ -78,7 +78,7 @@ function handleAnswer(index) {
 // Brukeren trykker 1 for første alternativ, 2 for andre, osv.
 document.addEventListener('keydown', (e) => {
   if (e.key >= '1' && e.key <= '3') {
-    handleAnswer(parseInt(e.key) - 1);
+    handleAnswer(parseInt(e.key) - 1); // Trekker fra 1 fordi array-indekser starter på 0
   }
 });
 
