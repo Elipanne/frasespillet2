@@ -29,6 +29,36 @@
         answers: ["rett fram", "mannen i månen", "under juletreet"],
         correctIndex: 2
       },
+       {
+        question: "finn adjektivfrasen",
+        answers: ["svært gunstig", "sjøsamisk kultur", "rødgrøt med fløte"],
+        correctIndex: 0
+      },
+      {
+        question: "finn substantivfrasen",
+        answers: ["gul med svarte striper", "varene fra Kina", "streng men rettferdig"],
+        correctIndex: 1
+      },
+       {
+        question: "finn preposisjonsfrasen",
+        answers: ["mellom barken og veden", "pølse i lompe", "heim til Norge"],
+        correctIndex: 0
+      },
+       {
+        question: "finn adjektivfrasen",
+        answers: ["fred i vår tid", "overstrømmende vennlighet", "sjokkerende gult"],
+        correctIndex: 2
+      },
+        {
+        question: "finn frasen med tillegg både foran og bak",
+        answers: ["den ufyselige skurken sine to ubrukelige medhjelpere", "en mild sykdom som går fort over", "milliardæren fra Andeby"],
+        correctIndex: 1
+      },
+       {
+        question: "finn frasen med tillegg foran",
+        answers: ["et vanskelig fag som kan gi skuffelser", "lyden av Norge ", "hjertelig hilsen"],
+        correctIndex: 2
+      },
       // Add 8 more questions here
     ];
 
@@ -76,7 +106,7 @@
 
     function showResult() {
       const resultBox = document.getElementById("result");
-      resultBox.textContent = `Your score: ${score}/10 - You ${score >= 7 ? "Win!" : "Lose!"}`;
+      resultBox.textContent = `Your score: ${score}/8 - You ${score >= 6 ? "Hurra du vant!" : "Æsj du tapte!"}`;
     }
 
     showQuestion();
