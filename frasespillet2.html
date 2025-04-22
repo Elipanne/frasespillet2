@@ -1,82 +1,85 @@
 <!DOCTYPE html>
-<html lang="no">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Rakettdrivstoff-spill</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Game</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    .question-box { margin-bottom: 20px; }
+    .question-text { font-size: 1.2em; margin-bottom: 10px; }
+    button { display: block; margin: 5px 0; padding: 10px; width: 100%; }
+    .result { font-weight: bold; margin-top: 20px; font-size: 1.3em; }
+  </style>
 </head>
 <body>
+  <h1>Quiz Game</h1>
+  <div id="quiz-container"></div>
+  <div class="result" id="result"></div>
+
   <script>
-    // Hele JavaScript-koden din fra Canvas-fila limes inn her 👇
-
-    // Enkel versjon av rakettdrivstoff-spillet i HTML + Canvas + JavaScript
-    // Spilleren svarer på spørsmål. Riktige svar gir drivstoff, gale svar trekker fra.
-    // Etter X spørsmål: vinn (hvis nok drivstoff) eller tap.
-
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 600;
-    document.body.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
-
-    let questions = [
-      { question: 'Hva heter hovedstaden i Norge?', options: ['Oslo', 'Bergen', 'Trondheim'], answer: 0 },
-      { question: 'Hva er 5 + 3?', options: ['6', '8', '10'], answer: 1 },
-      { question: 'Hvilken farge får du av blå og gul?', options: ['Grønn', 'Lilla', 'Oransje'], answer: 0 }
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        answers: ["Berlin", "Madrid", "Paris", "Rome"],
+        correctIndex: 2
+      },
+      {
+        question: "Which planet is known as the Red Planet?",
+        answers: ["Earth", "Mars", "Jupiter", "Saturn"],
+        correctIndex: 1
+      },
+      // Add 8 more questions here
     ];
 
-    let currentQuestion = 0;
-    let fuel = 50;
-    let fuelGain = 20;
-    let fuelLoss = 15;
-    let fuelGoal = 70;
-    let gameOver = false;
+    let currentQuestionIndex = 0;
+    let score = 0;
 
-    function drawScreen() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'black';
-      ctx.font = '24px Arial';
+    function showQuestion() {
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = "";
 
-      if (gameOver) {
-        if (fuel >= fuelGoal) {
-          ctx.fillText('Du vant! Raketten flyr avgårde! 🚀', 200, 250);
-        } else {
-          ctx.fillText('Du tapte! Ikke nok drivstoff...', 200, 250);
-        }
+      if (currentQuestionIndex >= questions.length) {
+        showResult();
         return;
       }
 
-      let q = questions[currentQuestion];
-      ctx.fillText(q.question, 50, 100);
-      q.options.forEach((opt, i) => {
-        ctx.fillText(`${i + 1}: ${opt}`, 70, 150 + i * 40);
+      const q = questions[currentQuestionIndex];
+      const questionBox = document.createElement("div");
+      questionBox.className = "question-box";
+
+      const questionText = document.createElement("div");
+      questionText.className = "question-text";
+      questionText.textContent = `Question ${currentQuestionIndex + 1}: ${q.question}`;
+
+      questionBox.appendChild(questionText);
+
+      q.answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.textContent = answer;
+        btn.onclick = () => handleAnswer(index === q.correctIndex);
+        questionBox.appendChild(btn);
       });
 
-      ctx.fillText(`Drivstoff: ${fuel}`, 600, 50);
+      container.appendChild(questionBox);
     }
 
-    function handleAnswer(index) {
-      if (gameOver) return;
-      let q = questions[currentQuestion];
-      if (index === q.answer) {
-        fuel += fuelGain;
+    function handleAnswer(isCorrect) {
+      if (isCorrect) {
+        score++;
       } else {
-        fuel -= fuelLoss;
+        score = Math.max(0, score - 1);
       }
-      currentQuestion++;
-      if (currentQuestion >= questions.length) {
-        gameOver = true;
-      }
-      drawScreen();
+      currentQuestionIndex++;
+      showQuestion();
     }
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key >= '1' && e.key <= '3') {
-        handleAnswer(parseInt(e.key) - 1);
-      }
-    });
+    function showResult() {
+      const resultBox = document.getElementById("result");
+      resultBox.textContent = `Your score: ${score}/10 - You ${score >= 7 ? "Win!" : "Lose!"}`;
+    }
 
-    drawScreen();
+    showQuestion();
   </script>
 </body>
 </html>
-
