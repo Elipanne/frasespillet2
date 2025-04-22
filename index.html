@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quiz Game</title>
+  <title>Frasespllet 2: identifiser ulike frasetyper</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
     .question-box { margin-bottom: 20px; }
@@ -13,8 +13,8 @@
   </style>
 </head>
 <body>
-  <h1>Quiz Game</h1>
-  <img src="blomst.png" alt="dekorativt bilde" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
+  <h1>Frasespillet 2/h1>
+  <img src="blomst.png" alt="dekorativt bilde" style="max-width: 50%; height: auto; margin-bottom: 20px;" />
   <div id="quiz-container"></div>
   <div class="result" id="result"></div>
 
@@ -81,7 +81,7 @@
 
       const questionText = document.createElement("div");
       questionText.className = "question-text";
-      questionText.textContent = `Question ${currentQuestionIndex + 1}: ${q.question}`;
+      questionText.textContent = `Spørsmål ${currentQuestionIndex + 1}: ${q.question}`;
 
       questionBox.appendChild(questionText);
 
@@ -107,7 +107,7 @@
 
     function showResult() {
       const resultBox = document.getElementById("result");
-      resultBox.textContent = `Your score: ${score}/8 - You ${score >= 6 ? "Hurra du vant!" : "Æsj du tapte!"}`;
+      resultBox.textContent = `Your score: ${score}/8 - Du ${score >= 6 ? "vant! Applaus og jubel!" : "tapte! Søren klype!"}`;
     }
 
     showQuestion();
