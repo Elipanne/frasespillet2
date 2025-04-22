@@ -1,3 +1,2 @@
 # frasespillet2
-en liten kviss om fraser inni fraser
-svar på spørsmålene for å se hvor godt du skjønner fraser inni fraser
+en liten kviss om fraser del 2. I denne kvissen skal en identifisere frasene etter type
