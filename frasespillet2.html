@@ -1,87 +1,82 @@
-// Enkel versjon av rakettdrivstoff-spillet i HTML + Canvas + JavaScript
-// Spilleren svarer på spørsmål. Riktige svar gir drivstoff, gale svar trekker fra.
-// Etter X spørsmål: vinn (hvis nok drivstoff) eller tap.
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <title>Rakettdrivstoff-spill</title>
+</head>
+<body>
+  <script>
+    // Hele JavaScript-koden din fra Canvas-fila limes inn her 👇
 
-// Lager et canvas-element (tegneflate) og legger det til på nettsiden
-const canvas = document.createElement('canvas');
-canvas.width = 800;
-canvas.height = 600;
-document.body.appendChild(canvas);
-const ctx = canvas.getContext('2d'); // Henter "tegnekonteksten" vi bruker til å tegne på canvas
+    // Enkel versjon av rakettdrivstoff-spillet i HTML + Canvas + JavaScript
+    // Spilleren svarer på spørsmål. Riktige svar gir drivstoff, gale svar trekker fra.
+    // Etter X spørsmål: vinn (hvis nok drivstoff) eller tap.
 
-// Spørsmålene i spillet – hvert har spørsmålstekst, svaralternativer og riktig svar (index)
-let questions = [
-  { question: 'Hva heter hovedstaden i Norge?', options: ['Oslo', 'Bergen', 'Trondheim'], answer: 0 },
-  { question: 'Hva er 5 + 3?', options: ['6', '8', '10'], answer: 1 },
-  { question: 'Hvilken farge får du av blå og gul?', options: ['Grønn', 'Lilla', 'Oransje'], answer: 0 },
-  // Legg til flere spørsmål her
-];
+    const canvas = document.createElement('canvas');
+    canvas.width = 800;
+    canvas.height = 600;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
 
-let currentQuestion = 0;      // Hvilket spørsmål vi er på nå
-let fuel = 50;                // Startnivå på drivstoff
-let fuelGain = 20;            // Hvor mye drivstoff du får for riktig svar
-let fuelLoss = 15;            // Hvor mye du mister for feil svar
-let fuelGoal = 70;            // Hvor mye drivstoff du må ha for å vinne
-let gameOver = false;         // Om spillet er ferdig eller ikke
+    let questions = [
+      { question: 'Hva heter hovedstaden i Norge?', options: ['Oslo', 'Bergen', 'Trondheim'], answer: 0 },
+      { question: 'Hva er 5 + 3?', options: ['6', '8', '10'], answer: 1 },
+      { question: 'Hvilken farge får du av blå og gul?', options: ['Grønn', 'Lilla', 'Oransje'], answer: 0 }
+    ];
 
-// Tegner alt på skjermen – spørsmål, alternativer og drivstoffstatus
-function drawScreen() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); // Tømmer skjermen før vi tegner på nytt
+    let currentQuestion = 0;
+    let fuel = 50;
+    let fuelGain = 20;
+    let fuelLoss = 15;
+    let fuelGoal = 70;
+    let gameOver = false;
 
-  ctx.fillStyle = 'black';
-  ctx.font = '24px Arial';
+    function drawScreen() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'black';
+      ctx.font = '24px Arial';
 
-  // Hvis spillet er ferdig, vis vinner/taper-melding
-  if (gameOver) {
-    if (fuel >= fuelGoal) {
-      ctx.fillText('Du vant! Raketten flyr avgårde! 🚀', 200, 250);
-    } else {
-      ctx.fillText('Du tapte! Ikke nok drivstoff...', 200, 250);
+      if (gameOver) {
+        if (fuel >= fuelGoal) {
+          ctx.fillText('Du vant! Raketten flyr avgårde! 🚀', 200, 250);
+        } else {
+          ctx.fillText('Du tapte! Ikke nok drivstoff...', 200, 250);
+        }
+        return;
+      }
+
+      let q = questions[currentQuestion];
+      ctx.fillText(q.question, 50, 100);
+      q.options.forEach((opt, i) => {
+        ctx.fillText(`${i + 1}: ${opt}`, 70, 150 + i * 40);
+      });
+
+      ctx.fillText(`Drivstoff: ${fuel}`, 600, 50);
     }
-    return; // Ikke tegn spørsmålene hvis spillet er over
-  }
 
-  // Henter gjeldende spørsmål og tegner det + svaralternativer
-  let q = questions[currentQuestion];
-  ctx.fillText(q.question, 50, 100); // Spørsmålstekst
-  q.options.forEach((opt, i) => {
-    ctx.fillText(`${i + 1}: ${opt}`, 70, 150 + i * 40); // Tegner hvert svaralternativ
-  });
+    function handleAnswer(index) {
+      if (gameOver) return;
+      let q = questions[currentQuestion];
+      if (index === q.answer) {
+        fuel += fuelGain;
+      } else {
+        fuel -= fuelLoss;
+      }
+      currentQuestion++;
+      if (currentQuestion >= questions.length) {
+        gameOver = true;
+      }
+      drawScreen();
+    }
 
-  // Tegner drivstoffstatus oppe i høyre hjørne
-  ctx.fillText(`Drivstoff: ${fuel}`, 600, 50);
-}
+    document.addEventListener('keydown', (e) => {
+      if (e.key >= '1' && e.key <= '3') {
+        handleAnswer(parseInt(e.key) - 1);
+      }
+    });
 
-// Kalles når spilleren svarer. Sjekker om riktig og oppdaterer drivstoff.
-function handleAnswer(index) {
-  if (gameOver) return; // Ikke gjør noe hvis spillet er over
+    drawScreen();
+  </script>
+</body>
+</html>
 
-  let q = questions[currentQuestion];
-
-  if (index === q.answer) {
-    fuel += fuelGain; // Riktig svar gir drivstoff
-  } else {
-    fuel -= fuelLoss; // Feil svar trekker fra
-  }
-
-  currentQuestion++; // Gå videre til neste spørsmål
-
-  // Hvis vi er ferdig med alle spørsmålene, avslutt spillet
-  if (currentQuestion >= questions.length) {
-    gameOver = true;
-  }
-
-  drawScreen(); // Oppdater skjermen
-}
-
-// Lytter etter tastetrykk: '1', '2' eller '3' – og kaller handleAnswer med riktig index
-// Brukeren trykker 1 for første alternativ, 2 for andre, osv.
-document.addEventListener('keydown', (e) => {
-  if (e.key >= '1' && e.key <= '3') {
-    handleAnswer(parseInt(e.key) - 1); // Trekker fra 1 fordi array-indekser starter på 0
-  }
-});
-
-// Starter spillet ved å tegne første skjerm
-
-drawScreen();
