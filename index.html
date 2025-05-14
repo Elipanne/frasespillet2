@@ -123,6 +123,21 @@
       const resultBox = document.getElementById("result");
       resultBox.textContent = `Du fikk: ${score}/8 - Du ${score >= 6 ? "vant! Applaus og jubel!" : "tapte! Søren klype!"}`;
       const wrongAnswers = playerAnswers.filter(ans => !ans.isCorrect);
+      const restartBtn = document.createElement("button");
+restartBtn.textContent = "Prøv igjen";
+restartBtn.style.marginTop = "20px";
+      restartBtn.style.padding = "10px 20px";
+restartBtn.style.fontSize = "1em";
+restartBtn.style.backgroundColor = "#4CAF50";
+restartBtn.style.color = "white";
+restartBtn.style.border = "none";
+restartBtn.style.borderRadius = "5px";
+restartBtn.style.cursor = "pointer";
+
+restartBtn.onclick = () => location.reload();
+
+resultBox.appendChild(restartBtn);
+
 
 if (wrongAnswers.length > 0) {
   const list = document.createElement("ul");
