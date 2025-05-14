@@ -109,15 +109,14 @@
       container.appendChild(questionBox);
     }
 
-    function handleAnswer(isCorrect) {
-      if (isCorrect) {
-        score++;
-      } else {
-        score = Math.max(0, score - 1);
-      }
-      currentQuestionIndex++;
-      showQuestion();
-    }
+   function handleAnswer(isCorrect) {
+  if (isCorrect) {
+    score++;
+  }
+  currentQuestionIndex++;
+  showQuestion();
+}
+
 
     function showResult() {
       const resultBox = document.getElementById("result");
