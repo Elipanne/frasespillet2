@@ -122,36 +122,37 @@
       const resultBox = document.getElementById("result");
       resultBox.textContent = `Du fikk: ${score}/8 - Du ${score >= 6 ? "vant! Applaus og jubel!" : "tapte! Søren klype!"}`;
       const wrongAnswers = playerAnswers.filter(ans => !ans.isCorrect);
-      const restartBtn = document.createElement("button");
-restartBtn.textContent = "Prøv igjen";
-restartBtn.style.marginTop = "20px";
-      restartBtn.style.padding = "10px 20px";
-restartBtn.style.fontSize = "1em";
-restartBtn.style.backgroundColor = "#4CAF50";
-restartBtn.style.color = "white";
-restartBtn.style.border = "none";
-restartBtn.style.borderRadius = "5px";
-restartBtn.style.cursor = "pointer";
+    if (wrongAnswers.length > 0) {
+  const section = document.createElement("div");
+  section.style.marginTop = "30px";
+  section.style.padding = "15px";
+  section.style.backgroundColor = "#fff3cd";
+  section.style.border = "1px solid #ffeeba";
+  section.style.borderRadius = "8px";
 
-restartBtn.onclick = () => location.reload();
+  const title = document.createElement("h2");
+  title.textContent = "🚫 Her er svarene du bommet på:";
+  title.style.color = "#856404";
+  section.appendChild(title);
 
-resultBox.appendChild(restartBtn);
-
-
-if (wrongAnswers.length > 0) {
   const list = document.createElement("ul");
+  list.style.paddingLeft = "20px";
+
   wrongAnswers.forEach(item => {
     const li = document.createElement("li");
-    li.innerHTML = `<strong>${item.question}</strong><br>
-      Du svarte: <em>${item.selected}</em><br>
-      Riktig svar: <em>${item.correct}</em>`;
+    li.style.marginBottom = "15px";
+    li.innerHTML = `
+      <strong style="color: #333;">${item.question}</strong><br>
+      ❌ Du svarte: <span style="color: #c0392b;">${item.selected}</span><br>
+      ✅ Riktig svar: <span style="color: #27ae60; font-weight: bold;">${item.correct}</span>
+    `;
     list.appendChild(li);
   });
-  resultBox.appendChild(document.createElement("hr"));
-  resultBox.appendChild(document.createTextNode("Her er svarene du bommet på:"));
-  resultBox.appendChild(list);
+
+  section.appendChild(list);
+  resultBox.appendChild(section);
 }
-    }
+
 
     showQuestion();
   </script>
