@@ -68,6 +68,8 @@
 
     let currentQuestionIndex = 0;
     let score = 0;
+    let playerAnswers = [];
+
 
     function showQuestion() {
       const container = document.getElementById("quiz-container");
@@ -91,7 +93,16 @@
       q.answers.forEach((answer, index) => {
         const btn = document.createElement("button");
         btn.textContent = answer;
-        btn.onclick = () => handleAnswer(index === q.correctIndex);
+        btn.onclick = () => {
+  playerAnswers.push({
+    question: q.question,
+    selected: answer,
+    correct: q.answers[q.correctIndex],
+    isCorrect: index === q.correctIndex
+  });
+  handleAnswer(index === q.correctIndex);
+};
+
         questionBox.appendChild(btn);
       });
 
@@ -111,6 +122,21 @@
     function showResult() {
       const resultBox = document.getElementById("result");
       resultBox.textContent = `Du fikk: ${score}/8 - Du ${score >= 6 ? "vant! Applaus og jubel!" : "tapte! Søren klype!"}`;
+      const wrongAnswers = playerAnswers.filter(ans => !ans.isCorrect);
+
+if (wrongAnswers.length > 0) {
+  const list = document.createElement("ul");
+  wrongAnswers.forEach(item => {
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${item.question}</strong><br>
+      Du svarte: <em>${item.selected}</em><br>
+      Riktig svar: <em>${item.correct}</em>`;
+    list.appendChild(li);
+  });
+  resultBox.appendChild(document.createElement("hr"));
+  resultBox.appendChild(document.createTextNode("Her er svarene du bommet på:"));
+  resultBox.appendChild(list);
+}
     }
 
     showQuestion();
